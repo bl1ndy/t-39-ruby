@@ -47,6 +47,6 @@ days_in_month = {
 
 days_in_month[2] = leap?(year) ? 29 : 28
 
-serial = (1...month).to_a.reduce(0) { |sum, m| sum += days_in_month[m] }
+serial = (1...month).to_a.reduce(0) { |sum, m| sum + days_in_month[m] }
 
 puts "Serial of date is #{serial + day}!"
