@@ -31,7 +31,7 @@ end
 
 cathetus1, cathetus2, hypo = [first, second, third].sort
 
-type = if hypo**2 == cathetus1**2 + cathetus2**2
+type = if hypo**2 == (cathetus1**2) + (cathetus2**2)
          'right'
        elsif hypo == cathetus1 && hypo == cathetus2 && cathetus1 == cathetus2
          'equilateral and isosceles'

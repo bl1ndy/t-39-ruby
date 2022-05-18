@@ -14,7 +14,7 @@ puts "\n"
 puts 'Enter the c.'
 c = gets.chomp.to_i
 
-d = b**2 - 4 * a * c
+d = (b**2) - (4 * a * c)
 
 puts "\n"
 
