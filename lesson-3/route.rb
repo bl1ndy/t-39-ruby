@@ -20,4 +20,8 @@ class Route
   def stations
     [@start_station, *@inter_stations, @end_station]
   end
+
+  def show_stations
+    stations.each { |s| puts s.name }
+  end
 end
