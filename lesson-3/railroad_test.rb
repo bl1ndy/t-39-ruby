@@ -38,8 +38,12 @@ class RailroadTest < Minitest::Test
     assert @station1.trains == [@train1, @train2, @train3]
   end
 
-  def test_trains_on_station_by_type
-    assert @station1.trains_by_type == { cargo: 2, passenger: 1 }
+  def test_trains_count_by_type
+    assert @station1.trains_count_by_type(:cargo) == 2
+  end
+
+  def test_trains_list_by_type
+    assert @station1.trains_list_by_type(:cargo) == [@train1, @train2]
   end
 
   def test_train_has_stations
