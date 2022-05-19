@@ -14,14 +14,10 @@ class Route
   end
 
   def exclude_station(station)
-    @inter_stations.delete_if { |s| s == station }
+    @inter_stations.delete(station)
   end
 
   def stations
     [@start_station, *@inter_stations, @end_station]
-  end
-
-  def show_stations
-    stations.each { |s| puts s.name }
   end
 end
