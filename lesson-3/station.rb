@@ -17,7 +17,7 @@ class Station
   end
 
   def trains_list_by_type(type)
-    @trains.select { |t| t.type == type }
+    @trains.select { |t| t.type == type.to_sym }
   end
 
   def trains_count_by_type(type)
