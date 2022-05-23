@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'common'
 require_relative '../models/train'
 require_relative '../models/cargo_train'
 require_relative '../models/passenger_train'
