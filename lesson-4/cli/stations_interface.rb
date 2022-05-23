@@ -1,73 +1,84 @@
 # frozen_string_literal: true
 
 require_relative '../models/station'
+require_relative 'common'
 
-def stations_interface
-  loop do
-    if @stations.empty?
-      clear_screen
-      puts "There are no stations.\n\n"
-    else
-      show_stations(@stations)
-    end
+class StationsInterface
+  include Common
 
-    puts '1: Create new station'
-    puts '2: Show trains on station' unless @stations.empty?
-    puts '0: Back to navigation'
+  def initialize(interface)
+    @interface = interface
+  end
 
-    input = validate_input(gets.chomp, (0..2))
+  def call
+    loop do
+      if @interface.stations.empty?
+        clear_screen
+        puts "There are no stations.\n\n"
+      else
+        show_stations(@interface.stations)
+      end
 
-    case input
-    when 1
-      create_station
-    when 2
-      show_stations(@stations)
-      puts "1-#{@stations.count}: Choose station"
-      puts '0: Back to Stations'
-      input = validate_input(gets.chomp, (0..@stations.count))
+      puts '1: Create new station'
+      puts '2: Show trains on station' unless @interface.stations.empty?
+      puts '0: Back to navigation'
 
-      next if input.zero?
+      input = validate_input(gets.chomp, (0..2))
 
-      show_station(@stations[input - 1])
+      case input
+      when 1
+        create_station
+      when 2
+        show_stations(@interface.stations)
+        puts "1-#{@interface.stations.count}: Choose station"
+        puts '0: Back to Stations'
+        input = validate_input(gets.chomp, (0..@interface.stations.count))
 
-      puts 'Press any key: Back to Stations'
+        next if input.zero?
 
-      next if gets
-    else
-      break
+        show_station(@interface.stations[input - 1])
+
+        puts 'Press any key: Back to Stations'
+
+        next if gets
+      else
+        break
+      end
     end
   end
-end
 
-def show_stations(list)
-  clear_screen
-  puts '########### Stations ###########'
-  list.each_with_index { |s, i| puts "#{i + 1}: #{s.name}" }
-  puts "################################\n\n"
-end
+  private
 
-def show_station(station)
-  clear_screen
-  puts "Station: #{station.name}\n\n"
-  puts 'Trains:'
-  station.trains.each_with_index { |t, i| puts "#{i + 1}: Serial: '#{t.serial}'. Type: '#{t.type}'" }
-  puts "\n"
-end
-
-def create_station
-  loop do
+  def show_stations(list)
     clear_screen
-    print 'Enter a station name: '
+    puts '########### Stations ###########'
+    list.each_with_index { |s, i| puts "#{i + 1}: #{s.name}" }
+    puts "################################\n\n"
+  end
 
-    name = gets.chomp
-    @stations << Station.new(name)
+  def show_station(station)
+    clear_screen
+    puts "Station: #{station.name}\n\n"
+    puts 'Trains:'
+    station.trains.each_with_index { |t, i| puts "#{i + 1}: Serial: '#{t.serial}'. Type: '#{t.type}'" }
+    puts "\n"
+  end
 
-    puts "Station '#{name}' successfully created!\n\n"
-    puts '1: Create one more station'
-    puts '0: Back to Stations'
+  def create_station
+    loop do
+      clear_screen
+      print 'Enter a station name: '
 
-    input = validate_input(gets.chomp, (0..1))
+      name = gets.chomp
+      @interface.stations << Station.new(name)
 
-    break if input.zero?
+      puts "Station '#{name}' successfully created!\n\n"
+      puts '1: Create one more station'
+      puts '0: Back to Stations'
+
+      input = validate_input(gets.chomp, (0..1))
+
+      break if input.zero?
+    end
   end
 end
