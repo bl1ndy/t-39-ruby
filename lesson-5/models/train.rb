@@ -9,6 +9,8 @@ class Train
 
   attr_reader :serial, :speed, :current_station, :type, :carriages
 
+  @instances = 0
+
   def initialize(serial)
     raise ArgumentError, 'Serial is already used' if Train.find(serial)
 
