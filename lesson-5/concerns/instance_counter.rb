@@ -8,15 +8,19 @@ module InstanceCounter
 
   module ClassMethods
     def instances
-      ObjectSpace.each_object(self).to_a.count
+      @instances
+    end
+
+    def instances=(instances)
+      @instances = instances
     end
   end
 
   module InstanceMethods
     private
 
-    # Не понял смысла данного метода, поэтому сделал его пустым
-    # ради тренировки подключения модуля с непубличными инстанс-методами
-    def register_instance; end
+    def register_instance
+      self.class.instances += 1
+    end
   end
 end
