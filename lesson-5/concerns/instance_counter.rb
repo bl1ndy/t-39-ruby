@@ -7,20 +7,18 @@ module InstanceCounter
   end
 
   module ClassMethods
-    def instances
-      @instances
-    end
+    attr_reader :instances
 
-    def instances=(instances)
-      @instances = instances
-    end
+    private
+
+    attr_writer :instances
   end
 
   module InstanceMethods
     private
 
     def register_instance
-      self.class.instances += 1
+      self.class.send(:instances=, self.class.instances + 1)
     end
   end
 end
