@@ -9,8 +9,6 @@ class Train
 
   attr_reader :serial, :speed, :current_station, :type, :carriages
 
-  @instances = 0
-
   def initialize(serial)
     raise ArgumentError, 'Serial is already used' if Train.find(serial)
 
@@ -76,8 +74,7 @@ class Train
 
   class << self
     def find(serial)
-      ObjectSpace.each_object(self)
-                 .find { |train| train.serial == serial }
+      all&.detect { |train| train.serial == serial }
     end
   end
 end

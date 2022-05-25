@@ -7,11 +7,11 @@ class Station
 
   attr_reader :name, :trains
 
-  @instances = 0
-
   def initialize(name)
     @name = name
     @trains = []
+
+    register_instance
   end
 
   def take_train(train)
@@ -28,11 +28,5 @@ class Station
 
   def trains_count_by_type(type)
     @trains.count { |t| t.type == type.to_sym }
-  end
-
-  class << self
-    def all
-      ObjectSpace.each_object(self).to_a.reverse
-    end
   end
 end
