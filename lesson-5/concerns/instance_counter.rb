@@ -10,22 +10,20 @@ module InstanceCounter
     attr_reader :instances
 
     def all
-      @all
+      @all = @all || []
     end
 
     private
 
-    attr_writer :instances, :all
+    attr_writer :instances
   end
 
   module InstanceMethods
     private
 
     def register_instance
-      self.class.instances ? self.class.send(:instances=, self.class.instances + 1)
-                           : self.class.send(:instances=, 1)
-      self.class.all ? self.class.all << self
-                     : self.class.send(:all=, [self])
+      self.class.all << self
+      self.class.send(:instances=, self.class.all.size)
     end
   end
 end
