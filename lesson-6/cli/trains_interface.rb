@@ -64,10 +64,16 @@ class TrainsInterface
       train = [CargoTrain, PassengerTrain][type - 1]
 
       clear_screen
-      print 'Enter a train serial: '
 
-      serial = gets.chomp
-      @interface.trains << train.new(serial)
+      begin
+        print 'Enter a train serial: '
+        serial = gets.chomp
+        @interface.trains << train.new(serial)
+      rescue
+        puts 'Invalid serial format! Please try again'
+        puts "Valid format is: 3 numbers or/and letters, hyphen (unnecessary), 2 numbers or/and letters\n\n"
+        retry
+      end
 
       puts "Train '#{serial}' successfully created!\n\n"
       puts '1: Create one more train'
