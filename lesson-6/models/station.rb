@@ -10,7 +10,7 @@ class Station
   attr_reader :name, :trains
 
   def initialize(name = nil)
-    @name = name
+    @name = name.to_s
     @trains = []
 
     validate!
@@ -38,6 +38,6 @@ class Station
   private
 
   def validate!
-    raise ArgumentError, 'Please set station name' unless @name
+    raise ArgumentError, 'Please set station name' unless @name =~ /.+/
   end
 end
