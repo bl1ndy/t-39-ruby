@@ -35,6 +35,10 @@ class Station
     @trains.count { |t| t.type == type.to_sym }
   end
 
+  def each_train(&block)
+    @trains.each { |t| yield(t) }
+  end
+
   private
 
   def validate!
