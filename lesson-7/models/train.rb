@@ -79,6 +79,10 @@ class Train
     @current_station = prev_station
   end
 
+  def each_carriage(&block)
+    @carriages.each { |c| yield(c) }
+  end
+
   class << self
     def find(serial)
       all&.detect { |train| train.serial == serial.to_s }
