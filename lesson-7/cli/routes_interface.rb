@@ -177,4 +177,11 @@ class RoutesInterface
       end
     end
   end
+
+  def show_stations(list)
+    clear_screen
+    puts '########### Stations ###########'
+    list.each_with_index { |s, i| puts "#{i + 1}: #{s.name}" }
+    puts "################################\n\n"
+  end
 end
