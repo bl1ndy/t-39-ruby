@@ -18,7 +18,7 @@ class Carriage
   end
 
   def fill(volume = nil)
-    @occupied += volume ||  1
+    @occupied += volume || 1
   end
 
   def free
@@ -28,6 +28,7 @@ class Carriage
   private
 
   def validate!
+    raise ArgumentError, 'Please set a carriage capacity' unless @capacity
     raise TypeError, 'Invalid value for carriage capacity!' unless @capacity.is_a?(Integer) || @capacity.is_a?(Float)
   end
 end
