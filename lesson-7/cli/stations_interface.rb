@@ -59,11 +59,11 @@ class StationsInterface
   def show_station(station)
     clear_screen
     puts "Station: #{station.name}\n\n"
-    puts 'Trains:'
+    puts '########### Trains ###########'
     station.each_train do |t, i|
       puts "#{i + 1}. Serial: '#{t.serial}' >> Type: '#{t.type.capitalize}' >> Carriages: #{t.carriages.count}"
     end
-    puts "\n"
+    puts "##############################\n\n"
   end
 
   def create_station
