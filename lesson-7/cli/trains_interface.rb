@@ -69,7 +69,7 @@ class TrainsInterface
         print 'Enter a train serial: '
         serial = gets.chomp
         @interface.trains << train.new(serial)
-      rescue
+      rescue ArgumentError
         puts 'Invalid serial format! Please try again'
         puts "Valid format is: 3 numbers or/and letters, hyphen (unnecessary), 2 numbers or/and letters\n\n"
         retry
@@ -89,15 +89,35 @@ class TrainsInterface
     clear_screen
     puts '############ Trains ############'
     @interface.trains.each_with_index do |t, i|
-      puts "#{i + 1}: Serial '#{t.serial}'. Type '#{t.type}'. Current station: #{t.current_station&.name}"
+      puts "#{i + 1}. Serial '#{t.serial}' >> "\
+           "Type: #{t.type.capitalize} >> "\
+           "Current station: #{t.current_station&.name || 'unset'}"
     end
     puts "################################\n\n"
+  end
+
+  def show_routes
+    clear_screen
+    puts '############ Routes ############'
+    @interface.routes.each_with_index do |r, i|
+      puts "#{i + 1}: From: '#{r.start_station.name}' to: '#{r.end_station.name}'"
+    end
+    puts "################################\n\n"
+  end
+
+  def show_carriages(train)
+    puts "Train '#{train.serial}'. Carriages: #{train.carriages.count}\n\n"
+    puts '############ Carriages ############'
+    train.each_carriage do |c, i|
+      puts "#{i + 1}. Type: #{c.type.capitalize} >> Occupied: #{c.occupied} >> Free: #{c.free}"
+    end
+    puts "###################################\n\n"
   end
 
   def manage_train(train)
     loop do
       clear_screen
-      puts "Train '#{train.serial}'\n\n"
+      show_carriages(train)
       puts '1: Manage carriages'
       puts '2: Take route' unless @interface.routes.empty?
       puts '3: Move train' if train.current_station
@@ -130,22 +150,27 @@ class TrainsInterface
   def manage_carriages(train)
     loop do
       clear_screen
-      puts "Train '#{train.serial}'. Carriages: #{train.carriages.count}\n\n"
+      show_carriages(train)
       puts '1: Hitch carriage'
       puts '2: Unhitch carriage'
+      puts '3: Fill carriage'
       puts '0: Back to Train'
 
-      input = validate_input(gets.chomp, (0..2))
+      input = validate_input(gets.chomp, (0..3))
 
       case input
       when 1
-        carriage = train.type == :cargo ? CargoCarriage.new : PassengerCarriage.new
+        clear_screen
+        print 'Please set carriage capacity: '
+
+        input = validate_input(gets.chomp, 10..100)
+
+        carriage = train.type == :cargo ? CargoCarriage.new(input) : PassengerCarriage.new(input)
         train.stop
         train.hitch_carriage(carriage)
       when 2
         clear_screen
-        train.carriages.each_with_index { |c, i| puts "#{i + 1}: Id-#{c.object_id}" }
-        puts "\n"
+        show_carriages(train)
         puts "1-#{train.carriages.count}: Choose carriage to unhitch" unless train.carriages.empty?
         puts '0: Back to Train'
 
@@ -156,6 +181,27 @@ class TrainsInterface
         carriage = train.carriages[input - 1]
         train.stop
         train.unhitch_carriage(carriage)
+      when 3
+        clear_screen
+        show_carriages(train)
+        puts "1-#{train.carriages.count}: Choose carriage to fill" unless train.carriages.empty?
+        puts '0: Back to Train'
+
+        input = validate_input(gets.chomp, (0..train.carriages.count))
+
+        next if input.zero?
+
+        carriage = train.carriages[input - 1]
+        train.stop
+
+        if carriage.type == :cargo
+          clear_screen
+          print "Please set a value to fill (max: #{carriage.free}): "
+          value = validate_input(gets.chomp, (0..carriage.free))
+          carriage.fill(value)
+        else
+          carriage.fill
+        end
       else
         break
       end
