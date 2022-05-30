@@ -60,7 +60,9 @@ class StationsInterface
     clear_screen
     puts "Station: #{station.name}\n\n"
     puts 'Trains:'
-    station.trains.each_with_index { |t, i| puts "#{i + 1}: Serial: '#{t.serial}'. Type: '#{t.type}'" }
+    station.each_train do |t, i|
+      puts "#{i + 1}. Serial: '#{t.serial}' >> Type: '#{t.type.capitalize}' >> Carriages: #{t.carriages.count}"
+    end
     puts "\n"
   end
 
