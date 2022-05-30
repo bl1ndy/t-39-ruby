@@ -40,8 +40,8 @@ class Route
   def validate!
     raise ArgumentError, 'Please set end/start stations' unless @start_station && @end_station
 
-    unless @start_station.is_a?(Station) && @end_station.is_a?(Station)
-      raise TypeError, 'Specified station(s) is/are not a Station instance(s)'
-    end
+    return if @start_station.is_a?(Station) && @end_station.is_a?(Station)
+
+    raise TypeError, 'Specified station(s) is/are not a Station instance(s)'
   end
 end

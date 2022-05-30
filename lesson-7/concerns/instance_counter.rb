@@ -10,7 +10,7 @@ module InstanceCounter
     attr_reader :instances
 
     def all
-     @all ||= []
+      @all ||= []
     end
 
     private

@@ -36,7 +36,7 @@ class Station
   end
 
   def each_train(&block)
-    @trains.each { |t| yield(t) }
+    @trains.each_with_index(&block)
   end
 
   private

@@ -80,7 +80,7 @@ class Train
   end
 
   def each_carriage(&block)
-    @carriages.each { |c| yield(c) }
+    @carriages.each_with_index(&block)
   end
 
   class << self

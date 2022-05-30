@@ -4,7 +4,7 @@ module Validatable
   def valid?
     validate!
     true
-  rescue
+  rescue ArgumentError, TypeError
     false
   end
 
