@@ -18,6 +18,10 @@ class Carriage
   end
 
   def fill(volume = nil)
+    result = @occupied + (volume || 1)
+
+    return if result > @capacity
+
     @occupied += volume || 1
   end
 
