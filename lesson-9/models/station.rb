@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
 require_relative '../concerns/instance_counter'
-require_relative '../concerns/validatable'
+require_relative '../concerns/validation'
 
 class Station
   include InstanceCounter
-  include Validatable
+  include Validation
 
   attr_reader :name, :trains
+
+  validate :name, :presence
 
   def initialize(name = nil)
     @name = name.to_s
@@ -37,11 +39,5 @@ class Station
 
   def each_train(&block)
     @trains.each_with_index(&block)
-  end
-
-  private
-
-  def validate!
-    raise ArgumentError, 'Please set station name' unless @name =~ /.+/
   end
 end

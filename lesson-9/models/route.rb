@@ -1,13 +1,18 @@
 # frozen_string_literal: true
 
 require_relative '../concerns/instance_counter'
-require_relative '../concerns/validatable'
+require_relative '../concerns/validation'
 
 class Route
   include InstanceCounter
-  include Validatable
+  include Validation
 
   attr_reader :start_station, :end_station
+
+  validate :start_station, :presence
+  validate :start_station, :type, Station
+  validate :end_station, :presence
+  validate :end_station, :type, Station
 
   def initialize(start = nil, finish = nil)
     @start_station = start
@@ -33,15 +38,5 @@ class Route
 
   def show_stations
     stations.each { |s| puts s.name }
-  end
-
-  private
-
-  def validate!
-    raise ArgumentError, 'Please set end/start stations' unless @start_station && @end_station
-
-    return if @start_station.is_a?(Station) && @end_station.is_a?(Station)
-
-    raise TypeError, 'Specified station(s) is/are not a Station instance(s)'
   end
 end

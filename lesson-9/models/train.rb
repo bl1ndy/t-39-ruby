@@ -2,14 +2,19 @@
 
 require_relative '../concerns/producable'
 require_relative '../concerns/instance_counter'
-require_relative '../concerns/validatable'
+require_relative '../concerns/validation'
 
 class Train
   include Producable
   include InstanceCounter
-  include Validatable
+  include Validation
 
   attr_reader :serial, :speed, :current_station, :type, :carriages
+
+  SERIAL_FORMAT = /^[a-zа-я|\d]{3}-*[a-zа-я|\d]{2}$/i.freeze
+
+  validate :serial, :presence
+  validate :serial, :format, SERIAL_FORMAT
 
   def initialize(serial = nil)
     raise ArgumentError, 'Serial is already used' if Train.find(serial)
@@ -87,13 +92,5 @@ class Train
     def find(serial)
       all&.detect { |train| train.serial == serial.to_s }
     end
-  end
-
-  private
-
-  def validate!
-    serial_format = /^[a-zа-я|\d]{3}-*[a-zа-я|\d]{2}$/i
-    raise ArgumentError, 'Please set train serial' unless @serial
-    raise ArgumentError, 'Serial has invalid format' unless @serial =~ serial_format
   end
 end

@@ -1,18 +1,21 @@
 # frozen_string_literal: true
 
 require_relative '../concerns/producable'
-require_relative '../concerns/validatable'
 require_relative '../concerns/accessors'
+require_relative '../concerns/validation'
 
 class Carriage
   include Producable
-  include Validatable
   extend Accessors
+  include Validation
 
   attr_reader :type, :capacity, :occupied
 
   attr_accessor_with_history :a, :d
   strong_attr_accessor :b, String
+
+  validate :capacity, :presence
+  validate :capacity, :type, Integer
 
   def initialize(capacity = nil)
     @type = nil
@@ -32,12 +35,5 @@ class Carriage
 
   def free
     @capacity - @occupied
-  end
-
-  private
-
-  def validate!
-    raise ArgumentError, 'Please set a carriage capacity' unless @capacity
-    raise TypeError, 'Invalid value for carriage capacity!' unless @capacity.is_a?(Integer) || @capacity.is_a?(Float)
   end
 end
