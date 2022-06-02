@@ -2,12 +2,17 @@
 
 require_relative '../concerns/producable'
 require_relative '../concerns/validatable'
+require_relative '../concerns/accessors'
 
 class Carriage
   include Producable
   include Validatable
+  extend Accessors
 
   attr_reader :type, :capacity, :occupied
+
+  attr_accessor_with_history :a, :d
+  strong_attr_accessor :b, String
 
   def initialize(capacity = nil)
     @type = nil
