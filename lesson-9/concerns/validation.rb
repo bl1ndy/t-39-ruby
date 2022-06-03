@@ -22,20 +22,21 @@ module Validation
       self.class.validations.each { |v| check(v) }
     end
 
-    # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/CyclomaticComplexity
     def check(validation)
-      value = instance_variable_get("@#{validation[:attr]}".to_sym)
+      attr, condition, param = validation.values
+      value = instance_variable_get("@#{attr}".to_sym)
 
-      case validation[:condition]
+      case condition
       when :presence
-        raise ArgumentError, "'#{validation[:attr]}' can't be blank" if value.nil? || value.to_s.strip.empty?
+        raise ArgumentError, "'#{attr}' can't be blank" if value.nil? || value.to_s.strip.empty?
       when :format
-        raise ArgumentError, "'#{validation[:attr]}' has invalid format" unless value =~ validation[:param]
+        raise ArgumentError, "'#{attr}' has invalid format" unless value =~ param
       when :type
-        raise TypeError, "'#{validation[:attr]}' has invalid type" unless value.is_a?(validation[:param])
+        raise TypeError, "'#{attr}' has invalid type" unless value.is_a?(param)
       end
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/CyclomaticComplexity
 
     def valid?
       validate!
