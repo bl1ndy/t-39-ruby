@@ -40,7 +40,7 @@ s1 = Station.new('s1')
 s2 = Station.new('s2')
 r = Route.new(s1, s2)
 
-puts 'Check format'
+puts 'Check type'
 puts "\n"
 puts "s1 = Station.new('s1')"
 puts "s2 = Station.new('s2')"
