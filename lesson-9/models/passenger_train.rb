@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 class PassengerTrain < Train
-  def initialize(serial)
+  validate :serial, :presence
+  validate :serial, :format, SERIAL_FORMAT
+
+  def initialize(serial = nil)
     super
     @type = :passenger
   end
